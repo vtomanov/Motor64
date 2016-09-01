@@ -17,7 +17,7 @@
 
 
 // Motor power change operations Queue
-// The idea is that we want smooth change e.g. whee we want from 0% to go to 100% we want first 10% next 20% next 30% etc. until we get to 100% 
+// The idea is that we want smooth change e.g. when we want from 0% to go to 100% we want first 10% next 20% next 30% etc. until we get to 100% 
 // The M64Q class takes care about this smoothing and take care about merging operations in case druring smoothing a new power settings has been requested
 // Just PUSH the power requests and POP and send to the motor - the class will deal with the rest
 
