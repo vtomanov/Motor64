@@ -23,7 +23,7 @@
 #include "Thread64.h"
 #include "Motor64Q.h"
 
-M64Q m64q;
+M64Q m64q; // M64Q m64q(5); // for configurable motor step 5% - default is 10%
 
 ////////////////////////////////////////////////////////////////////////////////
 //foreground generate random motor power between -100 and 100 every 1 sec
