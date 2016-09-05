@@ -17,7 +17,7 @@
 
 
 // Motor power change operations Queue
-// The idea is that we want smooth change e.g. when we want from 0% to go to 100% we want first 10% next 20% next 30% etc. until we get to 100% 
+// The idea is that we want smooth change e.g. whee we want from 0% to go to 100% we want first 10% next 20% next 30% etc. until we get to 100% 
 // The M64Q class takes care about this smoothing and take care about merging operations in case druring smoothing a new power settings has been requested
 // Just PUSH the power requests and POP and send to the motor - the class will deal with the rest
 
@@ -25,8 +25,16 @@ class M64Q
 {
   public:
 
-    M64Q(): L(0), I(0) {}
+    M64Q(int8_t step_percent = 10): L(0), I(0) 
+    {
+      ST = step_percent;
+      Q = new int8_t[(200 / ((uint16_t)ST))  + 2];
+    }
 
+     ~M64Q()
+     {
+        delete Q;
+     }
     // call and if true send the command to the motor
     // false if no elements in the Q
     // power_percent is the % of engine power - 0 stop ,from  -100 (BKWD) to  +100 (FRWD)
@@ -49,7 +57,7 @@ class M64Q
       if (L < power_percent)
       {
         I = 0;
-        for (int8_t S = (L / 10) * 10; S < power_percent; S += 10)
+        for (int8_t S = (L / ST) * ST; S < power_percent; S += ST)
         {
           if (S != L)
           {
@@ -61,7 +69,7 @@ class M64Q
       else if (L > power_percent)
       {
         I = 0;
-        for (int8_t S = (L / 10) * 10; S > power_percent; S -= 10)
+        for (int8_t S = (L / ST) * ST; S > power_percent; S -= ST)
         {
           if (S != L)
           {
@@ -74,9 +82,10 @@ class M64Q
 
   private :
 
-    int8_t Q[22]; // Q storage
+    int8_t * Q; // Q storage
     uint8_t I;    // index
     int8_t L;     // last pop value
+    int8_t ST;     // step
 
 };
 
