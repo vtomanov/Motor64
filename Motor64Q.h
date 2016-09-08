@@ -54,6 +54,14 @@ class M64Q
     // call whne you wnat the motor to change power
     inline void M64Q_PUSH(const int8_t power_percent)
     {
+	  if(I > 0)
+	  {
+		if (Q[I-1] == power_percent)
+		{
+			// we do not want new power
+			return;
+		}
+	  }
       if (L < power_percent)
       {
         I = 0;
@@ -80,6 +88,11 @@ class M64Q
       }
     }
 
+    inline int8_t M64Q_GET_LAST()
+    {
+      return L;
+    }
+
   private :
 
     int8_t * Q; // Q storage
@@ -88,5 +101,4 @@ class M64Q
     int8_t ST;     // step
 
 };
-
 
